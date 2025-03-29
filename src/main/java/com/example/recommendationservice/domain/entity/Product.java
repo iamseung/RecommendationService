@@ -1,9 +1,11 @@
 package com.example.recommendationservice.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
-@Table(name = "products", uniqueConstraints = {
+@Table(name = "product", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"brand_id", "category_id"})
 })
 public class Product {
@@ -21,4 +23,14 @@ public class Product {
 
     @Column(nullable = false)
     private Integer price;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", brand=" + brand +
+                ", category=" + category +
+                ", price=" + price +
+                '}';
+    }
 }

@@ -1,9 +1,13 @@
 package com.example.recommendationservice.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter
 @Entity
-@Table(name = "categories")
+@Table(name = "category")
+@ToString
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
