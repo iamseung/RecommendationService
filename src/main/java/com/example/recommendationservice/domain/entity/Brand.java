@@ -29,8 +29,17 @@ public class Brand {
         this.name = name;
     }
 
+    private Brand(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public static Brand of(String name) {
         return new Brand(name);
+    }
+
+    public static Brand of(Long id, String name) {
+        return new Brand(id, name);
     }
 
     public void update(String categoryName) {
