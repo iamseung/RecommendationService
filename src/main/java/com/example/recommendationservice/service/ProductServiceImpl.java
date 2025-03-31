@@ -75,12 +75,12 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     @Override
     public List<Product> findProductsByCategoryId(Long categoryId) {
-        return productJpaRepository.findProductsByCategoryId(categoryId);
+        return productJpaRepository.findProductsByCategoryIdWithBrand(categoryId);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Product> findByBrandId(Long brandId) {
-        return productJpaRepository.findByBrandId(brandId);
+        return productJpaRepository.findByBrandIdWithCategory(brandId);
     }
 }
