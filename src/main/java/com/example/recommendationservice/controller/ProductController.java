@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "상품 API", description = "상품 등록, 수정, 삭제 관련 API")
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ProductController {

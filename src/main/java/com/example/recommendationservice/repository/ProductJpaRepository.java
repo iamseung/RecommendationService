@@ -4,6 +4,7 @@ import com.example.recommendationservice.domain.dto.response.BrandWithTotalPrice
 import com.example.recommendationservice.domain.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,4 +44,11 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
     List<Product> findProductsByCategoryId(Long categoryId);
 
     List<Product> findByBrandId(Long brandId);
+
+    @Query("SELECT p FROM Product p JOIN FETCH p.category WHERE p.brand.id = :brandId")
+    List<Product> findByBrandIdWithCategory(@Param("brandId") Long brandId);
+
+    @Query("SELECT p FROM Product p JOIN FETCH p.brand WHERE p.category.id = :categoryId")
+    List<Product> findProductsByCategoryIdWithBrand(@Param("categoryId") Long categoryId);
+
 }
