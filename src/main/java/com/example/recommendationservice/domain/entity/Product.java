@@ -39,8 +39,19 @@ public class Product {
         this.price = price;
     }
 
+    private Product(Long id, Brand brand, Category category, Integer price) {
+        this.id = id;
+        this.brand = brand;
+        this.category = category;
+        this.price = price;
+    }
+
     public static Product of(Brand brand, Category category, Integer price) {
         return new Product(brand, category, price);
+    }
+
+    public static Product of(Long id, Brand brand, Category category, Integer price) {
+        return new Product(id, brand, category, price);
     }
 
     public void update(Brand brand, Category category, Integer price) {

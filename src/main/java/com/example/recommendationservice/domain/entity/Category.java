@@ -21,7 +21,16 @@ public class Category {
         this.name = name;
     }
 
+    private Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public static Category of(String name) {
         return new Category(name);
+    }
+
+    public static Category of(Long id, String name) {
+        return new Category(id, name);
     }
 }
