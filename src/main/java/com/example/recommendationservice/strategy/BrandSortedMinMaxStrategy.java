@@ -13,26 +13,36 @@ import static com.example.recommendationservice.exception.ErrorCode.PRODUCT_LIST
 @Component
 public class BrandSortedMinMaxStrategy implements MinAndMaxCategorySelectionStrategy {
 
+    private static final String EMPTY_PRODUCT_LIST_MESSAGE = "상품 리스트가 존재하지 않습니다.";
+
     @Override
     public MinMaxProductDto apply(List<Product> products) {
-        Product minProduct = products.stream()
-                .min(minPriceComparator())
-                .orElseThrow(() -> new BaseException(PRODUCT_LIST_IS_EMPTY, "상품 리스트가 존재하지 않습니다."));
-
-        Product maxProduct = products.stream()
-                .max(maxPriceComparator())
-                .orElseThrow(() -> new BaseException(PRODUCT_LIST_IS_EMPTY, "상품 리스트가 존재하지 않습니다."));
+        Product minProduct = findMinProduct(products);
+        Product maxProduct = findMaxProduct(products);
 
         return new MinMaxProductDto(minProduct, maxProduct);
     }
 
-    private Comparator<Product> minPriceComparator() {
-        return Comparator.comparingInt(Product::getPrice)
-                .thenComparing(p -> p.getBrand().getId());
+    private Product findMinProduct(List<Product> products) {
+        return products.stream()
+                .min(Comparator.comparingInt(Product::getPrice)
+                        .thenComparing(p -> p.getBrand().getId()))
+                .orElseThrow(() -> new BaseException(PRODUCT_LIST_IS_EMPTY, EMPTY_PRODUCT_LIST_MESSAGE));
     }
 
-    private Comparator<Product> maxPriceComparator() {
-        return Comparator.comparingInt(Product::getPrice).reversed()
-                .thenComparing(p -> p.getBrand().getId());
+    private Product findMaxProduct(List<Product> products) {
+        int maxPrice = getMaxPrice(products);
+
+        return products.stream()
+                .filter(p -> p.getPrice() == maxPrice)
+                .min(Comparator.comparing(p -> p.getBrand().getId()))
+                .orElseThrow(() -> new BaseException(PRODUCT_LIST_IS_EMPTY, EMPTY_PRODUCT_LIST_MESSAGE));
+    }
+
+    private int getMaxPrice(List<Product> products) {
+        return products.stream()
+                .mapToInt(Product::getPrice)
+                .max()
+                .orElseThrow(() -> new BaseException(PRODUCT_LIST_IS_EMPTY, EMPTY_PRODUCT_LIST_MESSAGE));
     }
 }
