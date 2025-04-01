@@ -29,8 +29,8 @@ class CategoryServiceImplTest {
     void givenNothing_whenFindingAllCategories_thenReturnsCategoryList() {
         // Given
         List<Category> expected = List.of(
-                Category.of("상의"),
-                Category.of("바지")
+                createCategory("상의"),
+                createCategory("바지")
         );
 
         given(categoryJpaRepository.findAll()).willReturn(expected);
@@ -48,7 +48,7 @@ class CategoryServiceImplTest {
     void givenCategoryName_whenFindingCategory_thenReturnsCategory() {
         // Given
         String categoryName = "상의";
-        Category expected = Category.of(categoryName);
+        Category expected = createCategory(categoryName);
         given(categoryJpaRepository.findByName(categoryName)).willReturn(Optional.of(expected));
 
         // When
@@ -80,7 +80,7 @@ class CategoryServiceImplTest {
     void givenCategoryId_whenFindingCategory_thenReturnsCategory() {
         // Given
         Long categoryId = 1L;
-        Category expected = Category.of("아우터");
+        Category expected = createCategory("아우터");
         given(categoryJpaRepository.findById(categoryId)).willReturn(Optional.of(expected));
 
         // When
@@ -105,5 +105,9 @@ class CategoryServiceImplTest {
                 .extracting("errorCode").isEqualTo(ErrorCode.NOT_EXIST_CATEGORY);
 
         then(categoryJpaRepository).should().findById(invalidId);
+    }
+
+    public Category createCategory(String name) {
+        return Category.of(name);
     }
 }
