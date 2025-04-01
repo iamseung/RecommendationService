@@ -7,9 +7,15 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "product", uniqueConstraints = {
+@Table(name = "product",
+    uniqueConstraints = {
         @UniqueConstraint(columnNames = {"brand_id", "category_id"})
-})
+    },
+    indexes = {
+            @Index(name = "idx_product_brand_id", columnList = "brand_id"),
+            @Index(name = "idx_product_category_id", columnList = "category_id")
+    }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
     @Id
