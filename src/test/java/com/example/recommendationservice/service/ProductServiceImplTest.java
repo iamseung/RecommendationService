@@ -14,9 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,9 +35,12 @@ class ProductServiceImplTest {
     @Test
     void givenProductModel_whenCreatingProduct_thenSavesProduct() {
         // Given
-        ProductModel model = new ProductModel(1L, 1L, 1000);
-        given(brandService.findById(1L)).willReturn(Brand.of("TestBrand"));
-        given(categoryService.findById(1L)).willReturn(Category.of("TestCategory"));
+        ProductModel model = createProductModel(1L, 1L, 1000);
+        Brand brand = createBrand("TestBrand");
+        Category category = createCategory("TestCategory");
+
+        given(brandService.findById(1L)).willReturn(brand);
+        given(categoryService.findById(1L)).willReturn(category);
         given(productJpaRepository.save(any(Product.class))).willReturn(null);
 
         // When & Then
@@ -45,17 +48,39 @@ class ProductServiceImplTest {
         then(productJpaRepository).should().save(any(Product.class));
     }
 
+    @DisplayName("중복된 브랜드-카테고리 조합으로 상품을 생성하면 예외를 던진다")
+    @Test
+    void givenDuplicateProduct_whenCreating_thenThrowsBaseException() {
+        // Given
+        ProductModel model = createProductModel(1L, 1L, 1000);
+        Brand brand = createBrand("Brand");
+        Category category = createCategory("Category");
+
+        given(brandService.findById(1L)).willReturn(brand);
+        given(categoryService.findById(1L)).willReturn(category);
+        given(productJpaRepository.save(any(Product.class))).willThrow(DataIntegrityViolationException.class);
+
+        // When & Then
+        assertThatThrownBy(() -> sut.createProduct(model))
+                .isInstanceOf(BaseException.class)
+                .hasMessageContaining("이미 존재합니다");
+    }
+
+
     @DisplayName("상품 ID와 수정 정보를 입력하면 상품을 수정한다")
     @Test
     void givenProductIdAndModel_whenUpdatingProduct_thenUpdatesProduct() {
         // Given
         Long productId = 1L;
         Product existingProduct = mock(Product.class);
-        ProductModel model = new ProductModel(2L, 2L, 2000);
+        ProductModel model = createProductModel(2L, 2L, 2000);
+
+        Brand updatedBrand = createBrand("UpdatedBrand");
+        Category updatedCategory = createCategory("UpdatedCategory");
 
         given(productJpaRepository.getReferenceById(productId)).willReturn(existingProduct);
-        given(brandService.findById(2L)).willReturn(Brand.of("UpdatedBrand"));
-        given(categoryService.findById(2L)).willReturn(Category.of("UpdatedCategory"));
+        given(brandService.findById(2L)).willReturn(updatedBrand);
+        given(categoryService.findById(2L)).willReturn(updatedCategory);
 
         // When
         sut.updateProduct(productId, model);
@@ -69,7 +94,7 @@ class ProductServiceImplTest {
     void givenInvalidProductId_whenUpdatingProduct_thenThrowsException() {
         // Given
         Long productId = 999L;
-        ProductModel model = new ProductModel(1L, 1L, 1000);
+        ProductModel model = createProductModel(1L, 1L, 1000);
         given(productJpaRepository.getReferenceById(productId)).willThrow(EntityNotFoundException.class);
 
         // When & Then
@@ -124,27 +149,40 @@ class ProductServiceImplTest {
     @Test
     void givenCategoryId_whenFindingProducts_thenReturnsProductList() {
         // Given
-        given(productJpaRepository.findProductsByCategoryId(1L)).willReturn(List.of(mock(Product.class)));
+        given(productJpaRepository.findProductsByCategoryIdWithBrand(1L)).willReturn(List.of(mock(Product.class)));
 
         // When
         List<Product> result = sut.findProductsByCategoryId(1L);
 
         // Then
         assertThat(result).isNotEmpty();
-        then(productJpaRepository).should().findProductsByCategoryId(1L);
+        then(productJpaRepository).should().findProductsByCategoryIdWithBrand(1L);
     }
 
     @DisplayName("브랜드 ID로 상품 목록을 조회할 수 있다")
     @Test
     void givenBrandId_whenFindingProducts_thenReturnsProductList() {
         // Given
-        given(productJpaRepository.findByBrandId(1L)).willReturn(List.of(mock(Product.class)));
+        given(productJpaRepository.findByBrandIdWithCategory(1L)).willReturn(List.of(mock(Product.class)));
 
         // When
         List<Product> result = sut.findByBrandId(1L);
 
         // Then
         assertThat(result).isNotEmpty();
-        then(productJpaRepository).should().findByBrandId(1L);
+        then(productJpaRepository).should().findByBrandIdWithCategory(1L);
     }
+
+    public ProductModel createProductModel(Long brandId, Long categoryId, Integer price) {
+        return ProductModel.of(brandId, categoryId, price);
+    }
+
+    public Brand createBrand(String name) {
+        return Brand.of(name);
+    }
+
+    public Category createCategory(String name) {
+        return Category.of(name);
+    }
+
 }

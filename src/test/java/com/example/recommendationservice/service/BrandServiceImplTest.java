@@ -32,7 +32,7 @@ class BrandServiceImplTest {
     @Test
     void givenValidBrandModel_whenCreatingBrand_thenSavesBrand() {
         // Given
-        BrandModel brandModel = new BrandModel("나이키");
+        BrandModel brandModel = createBrandModel("나이키");
         given(brandJpaRepository.findByName(brandModel.getBrandName())).willReturn(Optional.empty());
         given(brandJpaRepository.save(any())).willReturn(brandModel.toEntity());
 
@@ -47,7 +47,7 @@ class BrandServiceImplTest {
     @Test
     void givenDuplicateBrandName_whenCreatingBrand_thenThrowsException() {
         // Given
-        BrandModel brandModel = new BrandModel("아디다스");
+        BrandModel brandModel = createBrandModel("아디다스");
         given(brandJpaRepository.findByName(brandModel.getBrandName())).willReturn(Optional.of(Brand.of("아디다스")));
 
         // When & Then
@@ -66,8 +66,8 @@ class BrandServiceImplTest {
     void givenBrandModel_whenUpdatingBrand_thenUpdatesBrand() {
         // Given
         Long brandId = 1L;
-        Brand brand = Brand.of("기존이름");
-        BrandModel updateModel = new BrandModel("수정된이름");
+        Brand brand = createBrand("기존이름");
+        BrandModel updateModel = createBrandModel("수정된이름");
         given(brandJpaRepository.getReferenceById(brandId)).willReturn(brand);
 
         // When
@@ -83,7 +83,7 @@ class BrandServiceImplTest {
     void givenInvalidBrandId_whenUpdatingBrand_thenThrowsException() {
         // Given
         Long brandId = 999L;
-        BrandModel updateModel = new BrandModel("업데이트이름");
+        BrandModel updateModel = createBrandModel("업데이트이름");
         given(brandJpaRepository.getReferenceById(brandId)).willThrow(EntityNotFoundException.class);
 
         // When & Then
@@ -114,7 +114,7 @@ class BrandServiceImplTest {
     void givenBrandId_whenFindingBrand_thenReturnsBrand() {
         // Given
         Long brandId = 1L;
-        Brand brand = Brand.of("조회브랜드");
+        Brand brand = createBrand("조회브랜드");
         given(brandJpaRepository.findById(brandId)).willReturn(Optional.of(brand));
 
         // When
@@ -138,5 +138,13 @@ class BrandServiceImplTest {
                 .hasMessageContaining("브랜드가 존재하지 않습니다.")
                 .extracting("errorCode")
                 .isEqualTo(ErrorCode.NOT_EXIST_BRAND);
+    }
+
+    public Brand createBrand(String name) {
+        return Brand.of(name);
+    }
+
+    public BrandModel createBrandModel(String name) {
+        return BrandModel.of(name);
     }
 }

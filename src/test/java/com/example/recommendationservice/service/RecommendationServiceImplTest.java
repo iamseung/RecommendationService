@@ -71,10 +71,10 @@ class RecommendationServiceImplTest {
     @Test
     void getBrandWithLowestTotalPrice_returnsBrandWithLowestIdWhenTotalIsSame() {
         // Given
-        BrandWithTotalPriceDto brand1 = createBrandWithTotalPriceDto(1L, 22_000); // ✅ 선택 대상
+        BrandWithTotalPriceDto brand1 = createBrandWithTotalPriceDto(1L, 22_000);
         BrandWithTotalPriceDto brand2 = createBrandWithTotalPriceDto(2L, 22_000);
         BrandWithTotalPriceDto brand3 = createBrandWithTotalPriceDto(3L, 22_000);
-        List<BrandWithTotalPriceDto> brandStats = List.of(brand3, brand2, brand1); // 일부러 순서 섞음
+        List<BrandWithTotalPriceDto> brandStats = List.of(brand3, brand2, brand1);
 
         Brand selectedBrand = createBrand("브랜드A");
         Category top = createCategory("상의");
@@ -85,7 +85,7 @@ class RecommendationServiceImplTest {
         List<Product> products = createList(top1, pants1);
 
         given(productService.findBrandsWithLowestTotalPrice()).willReturn(brandStats);
-        given(brandSelectionStrategy.selectBrandId(brandStats)).willReturn(1L); // ✅ 오름차순 정책 결과
+        given(brandSelectionStrategy.selectBrandId(brandStats)).willReturn(1L);
         given(productService.findByBrandId(1L)).willReturn(products);
         given(brandService.findById(1L)).willReturn(selectedBrand);
 
