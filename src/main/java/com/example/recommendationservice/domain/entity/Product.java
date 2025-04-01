@@ -42,14 +42,4 @@ public class Product {
         if(category != null) { this.category = category; }
         if(price != null) { this.price = price; }
     }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", brand=" + brand +
-                ", category=" + category +
-                ", price=" + price +
-                '}';
-    }
 }

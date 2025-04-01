@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @Entity
 @Table(name = "category")
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
     @Id
