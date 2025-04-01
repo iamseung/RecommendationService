@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-@DisplayName("브랜드 서비스 로직 테스트")
+@DisplayName("비즈니스 로직 - 브랜드")
 @ExtendWith(MockitoExtension.class)
 class BrandServiceImplTest {
 
@@ -32,7 +32,7 @@ class BrandServiceImplTest {
     @Test
     void givenValidBrandModel_whenCreatingBrand_thenSavesBrand() {
         // Given
-        BrandModel brandModel = createBrandModel("나이키");
+        BrandModel brandModel = createBrandModel("브랜드A");
         given(brandJpaRepository.findByName(brandModel.getBrandName())).willReturn(Optional.empty());
         given(brandJpaRepository.save(any())).willReturn(brandModel.toEntity());
 
@@ -47,8 +47,8 @@ class BrandServiceImplTest {
     @Test
     void givenDuplicateBrandName_whenCreatingBrand_thenThrowsException() {
         // Given
-        BrandModel brandModel = createBrandModel("아디다스");
-        given(brandJpaRepository.findByName(brandModel.getBrandName())).willReturn(Optional.of(Brand.of("아디다스")));
+        BrandModel brandModel = createBrandModel("브랜드A");
+        given(brandJpaRepository.findByName(brandModel.getBrandName())).willReturn(Optional.of(Brand.of("브랜드A")));
 
         // When & Then
         assertThatThrownBy(() -> sut.createBrand(brandModel))
@@ -66,15 +66,15 @@ class BrandServiceImplTest {
     void givenBrandModel_whenUpdatingBrand_thenUpdatesBrand() {
         // Given
         Long brandId = 1L;
-        Brand brand = createBrand("기존이름");
-        BrandModel updateModel = createBrandModel("수정된이름");
+        Brand brand = createBrand("브랜드A");
+        BrandModel updateModel = createBrandModel("브랜드B");
         given(brandJpaRepository.getReferenceById(brandId)).willReturn(brand);
 
         // When
         sut.updateBrand(brandId, updateModel);
 
         // Then
-        assertThat(brand.getName()).isEqualTo("수정된이름");
+        assertThat(brand.getName()).isEqualTo("브랜드B");
         then(brandJpaRepository).should().getReferenceById(brandId);
     }
 
@@ -83,7 +83,7 @@ class BrandServiceImplTest {
     void givenInvalidBrandId_whenUpdatingBrand_thenThrowsException() {
         // Given
         Long brandId = 999L;
-        BrandModel updateModel = createBrandModel("업데이트이름");
+        BrandModel updateModel = createBrandModel("브랜드B");
         given(brandJpaRepository.getReferenceById(brandId)).willThrow(EntityNotFoundException.class);
 
         // When & Then
@@ -114,7 +114,7 @@ class BrandServiceImplTest {
     void givenBrandId_whenFindingBrand_thenReturnsBrand() {
         // Given
         Long brandId = 1L;
-        Brand brand = createBrand("조회브랜드");
+        Brand brand = createBrand("브랜드A");
         given(brandJpaRepository.findById(brandId)).willReturn(Optional.of(brand));
 
         // When

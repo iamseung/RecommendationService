@@ -21,10 +21,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(RecommendationController.class)
 class RecommendationControllerTest {
 
-    @Autowired private MockMvc mvc;
-    @Autowired private ObjectMapper objectMapper;
+    private final MockMvc mvc;
+    private final ObjectMapper objectMapper;
 
     @MockBean private RecommendationService recommendationService;
+
+    public RecommendationControllerTest(
+            @Autowired MockMvc mvc,
+            @Autowired ObjectMapper objectMapper) {
+        this.mvc = mvc;
+        this.objectMapper = objectMapper;
+    }
 
     @DisplayName("[API][GET] 카테고리별 최저가 상품 조회")
     @Test

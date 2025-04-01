@@ -22,10 +22,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BrandController.class)
 class BrandControllerTest {
 
-    @Autowired private MockMvc mvc;
-    @Autowired private ObjectMapper objectMapper;
+    private final MockMvc mvc;
+    private final ObjectMapper objectMapper;
 
     @MockBean private BrandService brandService;
+
+    public BrandControllerTest(
+            @Autowired MockMvc mvc,
+            @Autowired ObjectMapper objectMapper) {
+        this.mvc = mvc;
+        this.objectMapper = objectMapper;
+    }
 
     @DisplayName("[API][POST] 브랜드 등록 - 성공")
     @Test
