@@ -28,22 +28,19 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final BrandService brandService;
     private final ProductService productService;
 
-    // [1]
     @Override
     public MinPricePerCategoryResponse getMinPricePerCategory() {
-        // Strategy
+        // FindFirstMinPriceProductStrategy, 금액이 같다면 카테고리 ID 를 기준으로 선정 (오름차순)
         List<Product> minPriceProducts = minPriceCategorySelectionStrategy.apply(productService.findMinPriceProductsByCategory());
 
         return MinPricePerCategoryResponse.from(minPriceProducts);
     }
 
-    // [2]
     @Override
     public BrandRecommendationResponse getBrandWithLowestTotalPrice() {
-
         List<BrandWithTotalPriceDto> brandsWithLowestTotalPrice = productService.findBrandsWithLowestTotalPrice();
 
-        // Strategy
+        // FindFirstBrandSelectionStrategy, 금액이 같다면 브랜드 ID 를 기준으로 선정 (오름차순)
         Long selectedBrandId = brandSelectionStrategy.selectBrandId(brandsWithLowestTotalPrice);
         List<Product> products = productService.findByBrandId(selectedBrandId);
 
@@ -52,13 +49,12 @@ public class RecommendationServiceImpl implements RecommendationService {
         return BrandRecommendationResponse.from(brand, products);
     }
 
-    // [3]
     @Override
     public MinAndMaxPriceProductsResponse getMinAndMaxPriceProducts(String categoryName) {
         Category category = categoryService.findByName(categoryName);
         List<Product> products = productService.findProductsByCategoryId(category.getId());
 
-        // Strategy
+        // BrandSortedMinMaxStrategy, 금액이 같다면 브랜드 ID 를 기준으로 선정
         MinMaxProductDto minMaxProducts = minAndMaxCategorySelectionStrategy.apply(products);
 
         return MinAndMaxPriceProductsResponse.from(category, minMaxProducts);
