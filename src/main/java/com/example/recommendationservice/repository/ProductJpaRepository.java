@@ -25,7 +25,6 @@ public interface ProductJpaRepository extends JpaRepository<Product, Long> {
     """)
     List<Product> findMinPriceProductsByCategory();
 
-    // V2
     @Query(value = """
         SELECT p.brand_id AS brandId, SUM(p.price) AS totalPrice
         FROM product p
