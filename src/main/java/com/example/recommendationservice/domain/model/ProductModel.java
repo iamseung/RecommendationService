@@ -9,4 +9,8 @@ public class ProductModel {
     private Long brandId;
     private Long categoryId;
     private Integer price;
+
+    public static ProductModel of(Long brandId, Long categoryId, Integer price) {
+        return new ProductModel(brandId, categoryId, price);
+    }
 }

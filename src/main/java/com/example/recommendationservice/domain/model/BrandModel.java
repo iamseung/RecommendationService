@@ -12,4 +12,8 @@ public class BrandModel {
     public Brand toEntity() {
         return Brand.of(brandName);
     }
+
+    public static BrandModel of(String brandName) {
+        return new BrandModel(brandName);
+    }
 }

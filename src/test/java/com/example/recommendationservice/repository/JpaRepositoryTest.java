@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import static org.assertj.core.api.Assertions.*; // AssertJ
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @DisplayName("JPA Repository 테스트")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class JpaRepositoryTest {
+class JpaRepositoryTest {
 
     @Autowired private CategoryJpaRepository categoryJpaRepository;
     @Autowired private BrandJpaRepository brandJpaRepository;
@@ -68,6 +68,7 @@ public class JpaRepositoryTest {
         Map<Long, List<Product>> categoryGroup = products.stream()
                 .collect(Collectors.groupingBy(p -> p.getCategory().getId()));
 
+        assertThat(categoryGroup).isNotEmpty();
         assertThat(categoryGroup.values()).allSatisfy(list -> assertThat(list).isNotEmpty());
     }
 

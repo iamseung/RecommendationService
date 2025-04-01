@@ -1,7 +1,6 @@
 package com.example.recommendationservice.domain.dto.response;
 
 import com.example.recommendationservice.domain.entity.Category;
-import com.example.recommendationservice.domain.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

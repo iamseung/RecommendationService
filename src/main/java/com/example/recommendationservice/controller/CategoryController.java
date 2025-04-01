@@ -1,6 +1,5 @@
 package com.example.recommendationservice.controller;
 
-import com.example.recommendationservice.domain.dto.request.CreateBrandRequest;
 import com.example.recommendationservice.domain.dto.response.ApiSuccessResponse;
 import com.example.recommendationservice.domain.dto.response.CategoryResponse;
 import com.example.recommendationservice.domain.entity.Category;
@@ -8,7 +7,10 @@ import com.example.recommendationservice.service.CategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

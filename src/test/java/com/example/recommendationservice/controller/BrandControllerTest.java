@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BrandController.class)
 class BrandControllerTest {
 
-    // TODO, 주입에 대해서
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper objectMapper;
 

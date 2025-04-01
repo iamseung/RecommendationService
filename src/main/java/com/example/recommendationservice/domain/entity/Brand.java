@@ -45,12 +45,4 @@ public class Brand {
     public void update(String categoryName) {
         if(categoryName != null) { this.name = categoryName; }
     }
-
-    @Override
-    public String toString() {
-        return "Brand{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
