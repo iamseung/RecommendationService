@@ -21,10 +21,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
 
-    @Autowired private MockMvc mvc;
-    @Autowired private ObjectMapper objectMapper;
+    private final MockMvc mvc;
+    private final ObjectMapper objectMapper;
 
     @MockBean private ProductService productService;
+
+    public ProductControllerTest(
+            @Autowired MockMvc mvc,
+            @Autowired ObjectMapper objectMapper) {
+        this.mvc = mvc;
+        this.objectMapper = objectMapper;
+    }
 
     @DisplayName("[API][POST] 상품 등록 - 성공")
     @Test

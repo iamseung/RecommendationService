@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("추천 서비스 테스트")
+@DisplayName("비즈니스 로직 - 추천")
 class RecommendationServiceImplTest {
 
     @InjectMocks private RecommendationServiceImpl sut;

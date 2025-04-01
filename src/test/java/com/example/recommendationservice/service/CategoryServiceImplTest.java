@@ -17,7 +17,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-@DisplayName("카테고리 서비스")
+@DisplayName("비즈니스 로직 - 카테고리")
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceImplTest {
 
