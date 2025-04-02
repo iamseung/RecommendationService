@@ -143,13 +143,13 @@
 이 프로젝트에서 가장 많이 고민한 부분 중 하나는 **복잡한 비즈니스 로직을 DB 쿼리로 해결할 것인가, 애플리케이션 코드로 처리할 것인가?** 였습니다.
 이에 대한 고민을 아래와 같이 정리하였고, 전략 패턴 적용과 함께 코드 기반 처리를 선택했습니다.
 
-### 코드로 처리할 경우의 고려사항
+### ✅ 코드로 처리할 경우의 고려사항
 - 가독성이 뛰어나고, 복잡한 비즈니스 조건 삽입이 용이
 - 단위 테스트 작성이 훨씬 수월
 - 전략 패턴 등 OOP 설계원칙 적용 및 확장성 보장
 - **전체 데이터를 애플리케이션에서 필터링하기 때문에, 데이터량이 많을 경우 성능 이슈 발생 가능하다는 단점이 존재**
 
-### 쿼리로 처리할 경우의 고려사항
+### ✅ 쿼리 처리할 경우의 고려사항
 - 성능 측면에서 유리할 수 있음
 - 하지만 쿼리 복잡도가 높아지면 유지보수 비용 증가
 - 테스트 작성이 까다로움 (Mocking 어렵고, DB 종속도 높아짐)
@@ -227,16 +227,13 @@
 [Github](https://github.com/iamseung/M-View) 에서 확인할 수 있으며, 이를 직접 실행하실 때,
 Next.js는 3000번 포트, Spring Boot 는 8000번 포트로 지정하시고 실행을 권장드립니다.
 
-### 1. 카테고리별 최저가 상품 조회
-`http://localhost:3000/recommendation/min-price-per-category`
+### 1. [카테고리별 최저가 상품 조회](http://localhost:3000/recommendation/min-price-per-category)
 ![이미지](image/img.png)
 
-### 2. 단일 브랜드 최저가 추천
-`http://localhost:3000/recommendation/min-total-price`
+### 2. [단일 브랜드 최저가 추천](http://localhost:3000/recommendation/min-total-price)
 ![이미지](image/img_1.png)
 
-### 3. 카테고리별 가격 범위 조회
-`http://localhost:3000/recommendation/price-range`
+### 3. [카테고리별 가격 범위 조회](http://localhost:3000/recommendation/price-range)
 ![이미지](image/img_2.png)
 
 사용자의 불필요한 카테고리 입력을 방지하기 위해, 카테고리 데이터를 API 를 통해 가져와 Select Box 로 선택할 수 있게 했습니다.
