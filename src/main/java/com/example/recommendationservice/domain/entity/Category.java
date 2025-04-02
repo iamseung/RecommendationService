@@ -15,7 +15,7 @@ public class Category {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name; // 예: 상의, 아우터 ...
+    private String name;
 
     private Category(String name) {
         this.name = name;

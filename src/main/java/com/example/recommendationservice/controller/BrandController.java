@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "브랜드 API", description = "브랜드 등록, 수정, 삭제 관련 API")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class BrandController {
